@@ -3,6 +3,9 @@ All my elements
 */
 // const form = document.querySelector("form");
 const input = document.querySelector("input");
+const container = document.querySelector(".container");
+const sidebar = document.querySelector("#sidebar");
+const searchTitle = document.querySelector("#search-title");
 // console.log(input);
 input.addEventListener("keyup", function (e) {
   if (e.key === "Enter") {
@@ -41,7 +44,7 @@ for (var i = 0; i < previousSearchHistory.length; i++) {
   historyBtn.addEventListener("click", function (e) {
     createWeatherDisplay(e.target.textContent);
   });
-  document.body.appendChild(historyBtn);
+  sidebar.appendChild(historyBtn);
 }
 
 function addToHistory(location) {
@@ -75,6 +78,7 @@ function removeFromHistory(location) {
 }
 
 function createWeatherDisplay(location) {
+    
   return getCoords(location, 5)
     .then((res) => res.json())
     .then((data) => {
@@ -84,6 +88,7 @@ function createWeatherDisplay(location) {
         errorEl.textContent = "No results found";
         document.body.appendChild(errorEl);
       } else {
+        searchTitle.textContent = location;
         var { lat, lon } = data[0];
         currentWeather({ lat, lon })
           .then((weatherResponse) => weatherResponse.json())
@@ -92,7 +97,6 @@ function createWeatherDisplay(location) {
             var weatherPicture = document.createElement("img");
             weatherPicture.src = `http://openweathermap.org/img/w/${weatherData.current.weather[0].icon}.png`;
             document.body.appendChild(weatherPicture);
-
             var weatherDescription = document.createElement("p");
             weatherDescription.textContent =
               weatherData.current.weather[0].description;
