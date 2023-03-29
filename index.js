@@ -6,16 +6,29 @@ const input = document.querySelector("input");
 const container = document.querySelector(".container");
 const sidebar = document.querySelector("#sidebar");
 const searchTitle = document.querySelector("#search-title");
-// console.log(input);
+const currentWeatherDesc = document.querySelector("#weather-description-1");
+const currentWeatherIcon = document.querySelector("#weather-icon");
+const title1 = document.querySelector("#section-title-1");
+const title2 = document.querySelector("#section-title-2");
+const clearHistory = document.querySelector("#clear-history");
+const historyContainer = document.querySelector("#history-container");
+
+currentWeatherIcon.style.visibility = "hidden";
+title1.style.visibility = "hidden";
+title2.style.visibility = "hidden";
+
+clearHistory.addEventListener("click", function () {
+  localStorage.clear();
+  historyContainer.innerHTML = "";
+});
+
 input.addEventListener("keyup", function (e) {
   if (e.key === "Enter") {
-    // console.log("e.target.value", e.target.value);
-    // console.log("enter key was pressed");
     createWeatherDisplay(e.target.value);
   }
 });
 
-var api = "";
+var api = "3f4554a91084dec34b04a8262ea01949";
 
 // let query = { city: "Sunset Beach", state: "", country: "" };
 function getCoords(query, limit) {
@@ -26,7 +39,13 @@ function getCoords(query, limit) {
 
 function currentWeather({ lat, lon }) {
   return fetch(
-    `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${api}`
+    `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${api}&units=imperial`
+  );
+}
+
+function fiveDayForecast({ lat, lon }) {
+  return fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${api}&units=imperial`
   );
 }
 
@@ -44,23 +63,40 @@ for (var i = 0; i < previousSearchHistory.length; i++) {
   historyBtn.addEventListener("click", function (e) {
     createWeatherDisplay(e.target.textContent);
   });
-  sidebar.appendChild(historyBtn);
+  historyBtn.style.width = "100%";
+  historyContainer.appendChild(historyBtn);
 }
 
 function addToHistory(location) {
   var searchHistory = localStorage.getItem("history");
   if (searchHistory) {
     searchHistory = JSON.parse(searchHistory);
-    console.log("logging search history after parse", searchHistory);
-    //only push up if it is not included
+
     if (searchHistory.includes(location)) {
-        console.log('early return')
       return;
     }
-    console.log('doing da push')
+    let historyBtn = document.createElement("button");
+    historyBtn.textContent = location;
+    historyBtn.addEventListener("click", function (e) {
+      createWeatherDisplay(e.target.textContent);
+    });
+
+    historyBtn.style.width = "100%";
+    historyContainer.appendChild(historyBtn);
+    console.log("container", historyContainer);
+
     searchHistory.push(location);
     localStorage.setItem("history", JSON.stringify(searchHistory));
   } else {
+    let historyBtn = document.createElement("button");
+    historyBtn.textContent = location;
+    historyBtn.addEventListener("click", function (e) {
+      createWeatherDisplay(e.target.textContent);
+    });
+
+    historyBtn.style.width = "100%";
+    historyContainer.appendChild(historyBtn);
+    console.log("container", historyContainer);
     searchHistory = [location];
     localStorage.setItem("history", JSON.stringify(searchHistory));
   }
@@ -70,49 +106,66 @@ function removeFromHistory(location) {
   var searchHistory = localStorage.getItem("history");
   if (searchHistory) {
     searchHistory = JSON.parse(searchHistory);
-    console.log('searchHistory1',searchHistory)
+
     searchHistory = searchHistory.filter((item) => item !== location);
-    console.log('searchHistory2',searchHistory)
+
     localStorage.setItem("history", JSON.stringify(searchHistory));
   }
 }
 
 function createWeatherDisplay(location) {
-    
   return getCoords(location, 5)
     .then((res) => res.json())
     .then((data) => {
       if (!data.length) {
-        // removeFromHistory(location);
         var errorEl = document.createElement("p");
         errorEl.textContent = "No results found";
         document.body.appendChild(errorEl);
       } else {
-        searchTitle.textContent = location;
+        const currentDate = new Date(); // create a new Date object
+        const dateString = currentDate.toDateString(); // convert the date to a string
+
+        searchTitle.textContent = location + ": " + dateString;
         var { lat, lon } = data[0];
         currentWeather({ lat, lon })
           .then((weatherResponse) => weatherResponse.json())
           .then((weatherData) => {
-            // console.log(weatherData);
-            var weatherPicture = document.createElement("img");
-            weatherPicture.src = `http://openweathermap.org/img/w/${weatherData.current.weather[0].icon}.png`;
-            document.body.appendChild(weatherPicture);
-            var weatherDescription = document.createElement("p");
-            weatherDescription.textContent =
-              weatherData.current.weather[0].description;
-            document.body.appendChild(weatherDescription);
+            if (currentWeatherIcon.style.visibility === "hidden") {
+              currentWeatherIcon.style.visibility = "visible";
+              title1.style.visibility = "visible";
+              title2.style.visibility = "visible";
+            }
+
+            currentWeatherIcon.src = `http://openweathermap.org/img/w/${weatherData.current.weather[0].icon}.png`;
+
+            currentWeatherDesc.innerText = `Temperature: ${weatherData.current.temp}°F \nFeels Like: ${weatherData.current.feels_like}°F\nHumidity: ${weatherData.current.humidity}%\nWind Speed: ${weatherData.current.wind_speed}mph\nDescription: ${weatherData.current.weather[0].description}  
+              `;
+            weatherData.current.weather[0].description;
+            // currentWeatherDesc.appendChild(weatherDescription);
             addToHistory(location);
+          });
+
+        fiveDayForecast({ lat, lon })
+          .then((fiveDayResponse) => fiveDayResponse.json())
+          .then((fiveDayData) => {
+            const fiveDayForecastEl =
+              document.querySelector("#five-day-forecast");
+            fiveDayForecastEl.innerHTML = "";
+            for (var i = 0; i < fiveDayData.list.length; i += 8) {
+              const day = fiveDayData.list[i];
+              const dayEl = document.createElement("div");
+              dayEl.setAttribute("class", "day");
+              const dayDate = new Date(day.dt * 1000);
+              const dayDateStr = dayDate.toDateString();
+              dayEl.innerHTML = `
+                <h3 class="weather-description">${dayDateStr}</h3>
+                <img src="http://openweathermap.org/img/w/${day.weather[0].icon}.png" />
+                <p class="weather-description">Temp: ${day.main.temp}°F</p>
+                <p class="weather-description">Humidity: ${day.main.humidity}%</p>
+              `;
+              fiveDayForecastEl.appendChild(dayEl);
+            }
           });
       }
     });
 }
-
-// createWeatherDisplay("Sunset Beach, CA");
-
-// console.log('', coords);
-// currentWeather(coords);
-
-//not sure which way i want to do it yet
-//   fetch(
-//     `http://api.openweathermap.org/geo/1.0/direct?q=${query.city},${query.state},${query.country}&limit={limit}&appid=${api}`
-//   )

@@ -1,88 +1,197 @@
 body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  background: #54b4d3 !important;
+}
+
+h2 {
+  font-weight: 900 !important;
+}
+
+
+
+textarea {
+  background: transparent;
+  border: none;
+  resize: none;
+  color: #000000;
+  border-left: 1px solid black;
+  padding: 10px;
+}
+
+.jumbotron {
+  text-align: center;
+  background-color: transparent;
+  color: black;
+  border-radius: 0;
+  border-bottom: 10px solid black;
+}
+
+.description {
+  white-space: pre-wrap;
+}
+
+.time-block {
+  text-align: center;
+  border-radius: 15px;
+}
+
+.row {
+  white-space: pre-wrap;
+  height: 80px;
+  border-top: 2px solid black;
+}
+
+#placeholderRow {
+  border: none;
+  white-space: inherit;
+}
+
+#descriptionContainer {
+  position: relative;
+  justify-content: space-evenly;
+  top: -20px;
+}
+
+.hour {
+  background-color: #ffffff;
+  color: #000000;
+  border-top: 1px dashed #000000;
+}
+
+.past {
+  background-color: #d3d3d3;
+  color: white;
+}
+
+.present {
+  background-color: #ff6961;
+  color: white;
+}
+
+.future {
+  background-color: #77dd77;
+  color: white;
+}
+
+.saveBtn {
+  border-left: 1px solid black;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: #06aed5;
+  color: white;
+}
+
+.saveBtn i:hover {
+  font-size: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.notification {
+  display: none;
+  padding-bottom: 10px;
+  color: black;
+}
+
+.show {
+  display: block;
+}
+
+#search-title {
+  font-weight: bold;
+  color: black;
+  text-align: left;
+  border-bottom: 10px solid black;
+}
+
+#sidebar {
+  height: 200vh!important;
+}
+
+.display-3 {
+  font-size: 50px;
+  font-weight: 300;
+  line-height: 1.2;
+  color: black;
+}
+#weather-icon {
+  width: 100px;
+  height: 100px;
+}
+
+.weather-description {
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+h3.weather-description {
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+#forecast {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.forecast-card {
+  width: 150px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.forecast-card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.forecast-card img {
+  width: 50px;
+  height: 50px;
+}
+
+#current-weather {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#descriptionContainer {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+#five-day-forecast {
+  white-space: nowrap;
+  justify-content: center;
+}
+#five-day {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.day {
+  width: 98% !important;
+  margin: 5px !important;
+  padding: 5px;
+  border: 2px solid black;
+  border-radius: 5px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  #sticky-sidebar {
+    position: relative;
   }
-  
-  textarea {
-    background: transparent;
-    border: none;
-    resize: none;
-    color: #000000;
-    border-left: 1px solid black;
-    padding: 10px;
-  }
-  
-  .jumbotron {
-    text-align: center;
-    background-color: transparent;
-    color: black;
-    border-radius: 0;
-    border-bottom: 10px solid black;
-  }
-  
-  .description {
-    white-space: pre-wrap;
-  }
-  
-  .time-block {
-    text-align: center;
-    border-radius: 15px;
-  }
-  
-  .row {
-    white-space: pre-wrap;
-    height: 80px;
-    border-top: 1px solid white;
-  }
-  
-  .hour {
-    background-color: #ffffff;
-    color: #000000;
-    border-top: 1px dashed #000000;
-  }
-  
-  .past {
-    background-color: #d3d3d3;
-    color: white;
-  }
-  
-  .present {
-    background-color: #ff6961;
-    color: white;
-  }
-  
-  .future {
-    background-color: #77dd77;
-    color: white;
-  }
-  
-  .saveBtn {
-    border-left: 1px solid black;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    background-color: #06aed5;
-    color: white;
-  }
-  
-  .saveBtn i:hover {
-    font-size: 20px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .notification {
-    display: none;
-    padding-bottom: 10px;
-    color: black;
-  }
-  
-  .show {
-    display: block;
-  }
-  
-  #search-title {
-    font-size: 30px;
-    font-weight: bold;
-    color: black;
-    text-align: center;
-  }
+}
+
+
