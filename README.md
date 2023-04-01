@@ -18,7 +18,7 @@ No installation required.
 MIT License
 
 ## URL
-https://lsenn404.github.io/Module-06/
+https://lsenn404.github.io/weather-app/
 
 ## Contact
 You can reach me at Logsenn2@gmail.com
