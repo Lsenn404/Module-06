@@ -23,11 +23,14 @@
             class="nav flex-column flex-nowrap vh-100 overflow-auto text-white p-2"
             id="sidebar"
           >
-            <input
-              type="text"
-              id="input"
-              placeholder="Search for a location..."
-            />
+            <div class="display-inline" id="searchContainer">
+              <input
+                id="searchBar"
+                type="text"
+                placeholder="Search for a location..."
+              />
+              <button id="searchButton">Search</button>
+            </div>
             <div id="history-container"></div>
             <button id="clear-history">Clear History</button>
           </div>

@@ -2,7 +2,8 @@
 All my elements
 */
 // const form = document.querySelector("form");
-const input = document.querySelector("input");
+const input = document.querySelector("#searchBar");
+const inputButton = document.querySelector("#searchButton");
 const container = document.querySelector(".container");
 const sidebar = document.querySelector("#sidebar");
 const searchTitle = document.querySelector("#search-title");
@@ -27,6 +28,11 @@ input.addEventListener("keyup", function (e) {
     createWeatherDisplay(e.target.value);
   }
 });
+
+inputButton.addEventListener("click", function (e) {
+  createWeatherDisplay(input.value);
+});
+
 
 var api = "3f4554a91084dec34b04a8262ea01949";
 

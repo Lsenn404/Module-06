@@ -54,6 +54,19 @@ textarea {
   top: -20px;
 }
 
+#searchBar {
+  width: 70%;
+}
+
+#searchButton{
+  width: 30%;
+}
+
+#searchContainer {
+  width: 100%;
+  display: inline-flex !important;
+}
+
 .hour {
   background-color: #ffffff;
   color: #000000;
