@@ -33,7 +33,7 @@ var api = "3f4554a91084dec34b04a8262ea01949";
 // let query = { city: "Sunset Beach", state: "", country: "" };
 function getCoords(query, limit) {
   return fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=${limit}&appid=${api}`
+    `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=${limit}&appid=${api}`
   );
 }
 
